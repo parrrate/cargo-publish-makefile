@@ -40,7 +40,9 @@ impl Args {
         while let Some(package) = pending.pop_back() {
             touched.insert(package.clone());
             let packages = {
-                let package = *packages.get(&package).context("no package in workspace")?;
+                let package = *packages
+                    .get(&package)
+                    .with_context(|| format!("no package in workspace: {package}"))?;
                 package
                     .dependencies()
                     .iter()
