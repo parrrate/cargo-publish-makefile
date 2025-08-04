@@ -61,7 +61,11 @@ impl Args {
                 anyhow::bail!("cycle detected");
             }
             pending.insert(package);
-            pending.extend(packages);
+            pending.extend(
+                packages
+                    .into_iter()
+                    .filter(|package| !done.contains_key(package)),
+            );
         }
 
         let roots: LinkedHashSet<_> = {
