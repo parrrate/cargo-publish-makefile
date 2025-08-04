@@ -1,23 +1,13 @@
-use cargo_publish_makefile::Args;
-use clap::{Parser, Subcommand};
-
-#[derive(Subcommand)]
-enum Cmd {
-    PublishMakefile(Args),
-}
-
-#[derive(Parser)]
-struct Wrapped {
-    #[clap(subcommand)]
-    cmd: Cmd,
-}
+use clap::Parser;
 
 fn main() -> anyhow::Result<()> {
-    if std::env::current_exe()?.ends_with("cargo") {
-        let Cmd::PublishMakefile(args) = Wrapped::parse().cmd;
-        args
-    } else {
-        cargo_publish_makefile::Args::parse()
-    }
-    .run()
+    // https://github.com/onur/cargo-license/blob/57cfb0b73aa2d48fec9fcf172e7bcb439ce465ed/src/main.rs#L258-L265
+    let args = std::env::args().enumerate().filter_map(|(i, x)| {
+        if (i, x.as_str()) == (1, "publish-makefile") {
+            None
+        } else {
+            Some(x)
+        }
+    });
+    cargo_publish_makefile::Args::parse_from(args).run()
 }
