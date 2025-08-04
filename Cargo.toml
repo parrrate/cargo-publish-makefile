@@ -1,0 +1,12 @@
+[package]
+name = "cargo-publish-makefile"
+version = "0.0.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+cargo = { version = "0.89.0", features = ["all-static"] }
+clap = { version = "4.5.42", features = ["derive"] }
+itertools = "0.14.0"
+linked-hash-map = "0.5.6"
+linked_hash_set = "0.1.5"
