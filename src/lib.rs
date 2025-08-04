@@ -71,10 +71,18 @@ impl Args {
                 .cloned()
                 .collect()
         };
-        println!("publish: {}", roots.iter().join(" "));
+        let into_packages = |packages: LinkedHashSet<_>| {
+            packages
+                .into_iter()
+                .map(|package| format!("publish.{package}"))
+                .join(" ")
+        };
+        let roots = into_packages(roots);
+        println!("publish: {roots}");
         for (package, packages) in done {
             println!();
-            println!("publish.{package}: {}", packages.iter().join(" "));
+            let packages = into_packages(packages);
+            println!("publish.{package}: {packages}");
             println!("\tcargo publish --no-verify --locked --package {package}");
         }
         Ok(())
